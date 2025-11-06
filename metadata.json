@@ -1,0 +1,5 @@
+{
+  "name": "Vase Configurator UI",
+  "description": "A user interface for configuring a 3D vase model. Adjust parameters like height, radius, and color using interactive controls.",
+  "requestFramePermissions": []
+}
