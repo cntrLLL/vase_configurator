@@ -1,14 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Vase Configurator</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
-<script type="importmap">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Outfit', 'sans-serif'],
+          },
+          colors: {
+            glass: {
+              100: 'rgba(255, 255, 255, 0.1)',
+              200: 'rgba(255, 255, 255, 0.2)',
+              300: 'rgba(255, 255, 255, 0.3)',
+              dark: 'rgba(0, 0, 0, 0.4)',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <script type="importmap">
 {
   "imports": {
     "rxjs": "https://aistudiocdn.com/rxjs@^7.8.2?conditions=es2015",
@@ -24,13 +47,15 @@
   }
 }
 </script>
-<style>
-  body {
-    font-family: 'Inter', sans-serif;
-  }
-</style>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+  </style>
 </head>
-<body class="bg-white text-slate-900 antialiased">
+
+<body class="bg-slate-900 text-white antialiased overflow-hidden selection:bg-indigo-500 selection:text-white">
   <app-root></app-root>
 </body>
+
 </html>

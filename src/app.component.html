@@ -1,150 +1,262 @@
-<div class="flex flex-col h-screen w-screen bg-white font-sans overflow-hidden">
+<div class="relative w-screen h-screen overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+
+  <!-- Background Elements -->
+  <div class="absolute inset-0 overflow-hidden pointer-events-none">
+    <div class="absolute -top-[20%] -left-[10%] w-[50%] h-[50%] rounded-full bg-blue-500/20 blur-[120px]"></div>
+    <div class="absolute top-[40%] -right-[10%] w-[40%] h-[40%] rounded-full bg-purple-500/20 blur-[100px]"></div>
+    <div class="absolute -bottom-[10%] left-[20%] w-[30%] h-[30%] rounded-full bg-indigo-500/20 blur-[80px]"></div>
+  </div>
+
   <!-- Header -->
-  <header class="flex items-center justify-between p-4 border-b border-slate-200">
-    <div>
-      <h1 class="text-2xl font-semibold text-slate-900">Design your vase</h1>
+  <header class="absolute top-0 left-0 right-0 z-50 p-6 flex justify-between items-center">
+    <div class="flex items-center gap-3">
+      <div
+        class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/20">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24"
+          stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+        </svg>
+      </div>
+      <h1 class="text-2xl font-display font-bold text-white tracking-tight">Vase<span class="text-blue-400">Craft</span>
+      </h1>
+    </div>
+    <div class="flex gap-3">
+      <button (click)="resetToDefaults()"
+        class="px-4 py-2 rounded-lg bg-glass-100 hover:bg-glass-200 text-sm font-medium text-white/90 transition-all backdrop-blur-md border border-white/10">
+        Reset
+      </button>
     </div>
   </header>
 
-  <!-- Main Viewport -->
-  <main class="flex-1 relative flex items-center justify-center">
-    <div class="absolute inset-0 bg-grid-slate-100 [mask-image:linear-gradient(to_bottom,white,white,transparent)]"></div>
-    <div class="w-full h-full max-w-6xl max-h-[70vh] relative">
-      <div class="absolute inset-0 bg-slate-100 rounded-2xl"></div>
-      <canvas #gl class="absolute inset-0 w-full h-full rounded-2xl cursor-grab"
-        (mousedown)="onMouseDown($event)"
-        (mousemove)="onMouseMove($event)"
-        (mouseup)="onMouseUp()"
-        (mouseleave)="onMouseLeave()"
-        (wheel)="onWheel($event)"></canvas>
-    </div>
+  <!-- Main Canvas Area -->
+  <main class="absolute inset-0 z-0">
+    <canvas #gl class="w-full h-full cursor-grab active:cursor-grabbing" (mousedown)="onMouseDown($event)"
+      (mousemove)="onMouseMove($event)" (mouseup)="onMouseUp()" (mouseleave)="onMouseLeave()"
+      (wheel)="onWheel($event)"></canvas>
   </main>
-  
-  <!-- Bottom Dock -->
-  <footer class="w-full bg-slate-50 border-t border-slate-200 p-4">
-    <div class="max-w-4xl mx-auto">
+
+  <!-- Floating Controls -->
+  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 w-full max-w-5xl px-6 z-40">
+    <div class="bg-glass-dark backdrop-blur-xl border border-white/10 rounded-2xl p-1 shadow-2xl shadow-black/50">
+
       <!-- Tabs -->
-      <div class="flex items-center border-b border-slate-200 mb-4">
-        <div class="flex space-x-4">
-          <button (click)="activeTab.set('material')" class="py-2 px-1 text-sm font-semibold" [class.text-blue-600]="activeTab() === 'material'" [class.text-slate-500]="activeTab() !== 'material'">Material</button>
-          <button (click)="activeTab.set('glaze')" class="py-2 px-1 text-sm font-semibold" [class.text-blue-600]="activeTab() === 'glaze'" [class.text-slate-500]="activeTab() !== 'glaze'">Glaze</button>
-          <button (click)="activeTab.set('shape')" class="py-2 px-1 text-sm font-semibold" [class.text-blue-600]="activeTab() === 'shape'" [class.text-slate-500]="activeTab() !== 'shape'">Shape</button>
-          <button (click)="activeTab.set('finish')" class="py-2 px-1 text-sm font-semibold" [class.text-blue-600]="activeTab() === 'finish'" [class.text-slate-500]="activeTab() !== 'finish'">Finish</button>
-          <button (click)="activeTab.set('mark')" class="py-2 px-1 text-sm font-semibold" [class.text-blue-600]="activeTab() === 'mark'" [class.text-slate-500]="activeTab() !== 'mark'">Mark</button>
-        </div>
-        <div class="flex-grow"></div>
-        <div class="flex items-center space-x-2">
-            <button (click)="resetToDefaults()" class="px-4 py-2 text-sm font-semibold text-slate-600 hover:bg-slate-100 rounded-lg transition-colors">Reset</button>
-            <button class="px-4 py-2 text-sm font-semibold text-slate-600 hover:bg-slate-100 rounded-lg transition-colors">Compare A/B</button>
-        </div>
+      <div class="flex items-center gap-1 p-1 mb-4 bg-black/20 rounded-xl">
+        @for (tab of ['material', 'glaze', 'shape', 'finish', 'mark']; track tab) {
+        <button (click)="activeTab.set(tab)"
+          class="flex-1 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 relative overflow-hidden group"
+          [class.text-white]="activeTab() === tab" [class.text-white/50]="activeTab() !== tab"
+          [class.shadow-lg]="activeTab() === tab" [class.bg-glass-200]="activeTab() === tab">
+          <span class="relative z-10 capitalize">{{tab}}</span>
+          @if (activeTab() === tab) {
+          <div class="absolute inset-0 bg-gradient-to-t from-white/10 to-transparent opacity-50"></div>
+          }
+        </button>
+        }
       </div>
 
-      <!-- Tab Content -->
-      <div class="grid grid-cols-2 md:grid-cols-3 gap-x-8 gap-y-4">
-        
-        @if (activeTab() === 'material') {
-          <div class="col-span-full">
-            <div class="flex items-center space-x-2 bg-slate-200 p-1 rounded-lg">
-              <button (click)="material.set('ceramic')" class="flex-1 py-1 text-sm font-semibold rounded-md transition-colors" [class.bg-white]="material() === 'ceramic'" [class.text-slate-500]="material() !== 'ceramic'">Ceramic</button>
-              <button (click)="material.set('glass')" class="flex-1 py-1 text-sm font-semibold rounded-md transition-colors" [class.bg-white]="material() === 'glass'" [class.text-slate-500]="material() !== 'glass'">Glass</button>
-              <button (click)="material.set('metal')" class="flex-1 py-1 text-sm font-semibold rounded-md transition-colors" [class.bg-white]="material() === 'metal'" [class.text-slate-500]="material() !== 'metal'">Metal</button>
-            </div>
-          </div>
-        }
+      <!-- Content Area -->
+      <div class="px-6 pb-6 min-h-[140px] flex items-center">
+        <div class="w-full grid grid-cols-1 md:grid-cols-3 gap-8">
 
-        @if (activeTab() === 'glaze') {
-          <!-- Glaze Type -->
-          <div class="flex items-center justify-between">
-            <label class="text-sm font-semibold text-slate-700">Glaze Type</label>
-            <div class="flex items-center space-x-1 bg-slate-200 p-1 rounded-lg">
-              <button (click)="glazeType.set('solid')" class="px-3 py-1 text-sm font-semibold rounded-md transition-colors" [class.bg-white]="glazeType() === 'solid'" [class.text-slate-500]="glazeType() !== 'solid'">Solid</button>
-              <button (click)="glazeType.set('swirl')" class="px-3 py-1 text-sm font-semibold rounded-md transition-colors" [class.bg-white]="glazeType() === 'swirl'" [class.text-slate-500]="glazeType() !== 'swirl'">Swirl</button>
-            </div>
+          @if (activeTab() === 'material') {
+          <div class="col-span-full flex justify-center gap-4">
+            @for (mat of ['ceramic', 'glass', 'metal']; track mat) {
+            <button (click)="material.set(mat)"
+              class="group relative w-32 h-32 rounded-2xl border-2 transition-all duration-300 overflow-hidden"
+              [class.border-blue-500]="material() === mat" [class.border-white/10]="material() !== mat"
+              [class.scale-105]="material() === mat">
+              <div
+                class="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+              </div>
+              <div class="absolute inset-0 flex flex-col items-center justify-center gap-2">
+                <div class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-2xl">
+                  @if(mat === 'ceramic') { 🏺 }
+                  @if(mat === 'glass') { 🧊 }
+                  @if(mat === 'metal') { ⚙️ }
+                </div>
+                <span class="text-sm font-medium text-white capitalize">{{mat}}</span>
+              </div>
+            </button>
+            }
           </div>
-          <!-- Color 1 -->
-          <div class="flex items-center justify-between">
-            <label class="text-sm font-semibold text-slate-700">Color 1</label>
-            <input type="color" class="w-24 h-8 rounded-md border border-slate-300" [ngModel]="glazeColor1()" (ngModelChange)="glazeColor1.set($event)">
-          </div>
-          <!-- Color 2 (Conditional) -->
-          @if (glazeType() === 'swirl') {
-            <div class="flex items-center justify-between">
-              <label class="text-sm font-semibold text-slate-700">Color 2</label>
-              <input type="color" class="w-24 h-8 rounded-md border border-slate-300" [ngModel]="glazeColor2()" (ngModelChange)="glazeColor2.set($event)">
-            </div>
-          } @else {
-            <div></div>
           }
-          <!-- Glaze Controls (Conditional) -->
+
+          @if (activeTab() === 'glaze') {
+          <div class="space-y-4">
+            <div class="flex flex-col gap-2">
+              <label class="text-xs font-semibold text-white/60 uppercase tracking-wider">Type</label>
+              <div class="flex bg-black/20 rounded-lg p-1">
+                <button (click)="glazeType.set('solid')"
+                  class="flex-1 py-1.5 text-xs font-medium rounded-md transition-all"
+                  [class.bg-white/10]="glazeType() === 'solid'" [class.text-white]="glazeType() === 'solid'"
+                  [class.text-white/50]="glazeType() !== 'solid'">Solid</button>
+                <button (click)="glazeType.set('swirl')"
+                  class="flex-1 py-1.5 text-xs font-medium rounded-md transition-all"
+                  [class.bg-white/10]="glazeType() === 'swirl'" [class.text-white]="glazeType() === 'swirl'"
+                  [class.text-white/50]="glazeType() !== 'swirl'">Swirl</button>
+              </div>
+            </div>
+            <div class="flex flex-col gap-2">
+              <label class="text-xs font-semibold text-white/60 uppercase tracking-wider">Colors</label>
+              <div class="flex gap-3">
+                <input type="color" class="w-10 h-10 rounded-lg cursor-pointer bg-transparent border-0"
+                  [ngModel]="glazeColor1()" (ngModelChange)="glazeColor1.set($event)">
+                @if (glazeType() === 'swirl') {
+                <input type="color" class="w-10 h-10 rounded-lg cursor-pointer bg-transparent border-0"
+                  [ngModel]="glazeColor2()" (ngModelChange)="glazeColor2.set($event)">
+                }
+              </div>
+            </div>
+          </div>
+
           @if (glazeType() === 'swirl') {
-            <div class="flex items-center justify-between col-span-1">
-              <label class="text-sm font-semibold text-slate-700">Detail</label>
-              <input type="range" min="1" max="10" step="0.1" class="w-40 accent-blue-600" [ngModel]="glazeDetail()" (ngModelChange)="glazeDetail.set($event)">
+          <div class="space-y-4">
+            <div class="flex flex-col gap-2">
+              <div class="flex justify-between">
+                <label class="text-xs font-semibold text-white/60 uppercase tracking-wider">Detail</label>
+                <span class="text-xs text-white/80">{{glazeDetail()}}</span>
+              </div>
+              <input type="range" min="1" max="10" step="0.1"
+                class="w-full h-1.5 bg-white/10 rounded-full appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-blue-500"
+                [ngModel]="glazeDetail()" (ngModelChange)="glazeDetail.set($event)">
             </div>
-            <div class="flex items-center justify-between col-span-1">
-              <label class="text-sm font-semibold text-slate-700">Complexity</label>
-              <input type="range" min="1" max="5" step="0.1" class="w-40 accent-blue-600" [ngModel]="glazeComplexity()" (ngModelChange)="glazeComplexity.set($event)">
+            <div class="flex flex-col gap-2">
+              <div class="flex justify-between">
+                <label class="text-xs font-semibold text-white/60 uppercase tracking-wider">Complexity</label>
+                <span class="text-xs text-white/80">{{glazeComplexity()}}</span>
+              </div>
+              <input type="range" min="1" max="5" step="0.1"
+                class="w-full h-1.5 bg-white/10 rounded-full appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-blue-500"
+                [ngModel]="glazeComplexity()" (ngModelChange)="glazeComplexity.set($event)">
             </div>
-            <div class="flex items-center justify-between col-span-1">
-              <label class="text-sm font-semibold text-slate-700">Seed</label>
-              <button (click)="regenerateGlaze()" class="px-4 py-2 text-sm font-semibold text-slate-600 hover:bg-slate-100 rounded-lg transition-colors">Re-generate</button>
-            </div>
+          </div>
+          <div class="flex items-end">
+            <button (click)="regenerateGlaze()"
+              class="w-full py-2 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-sm font-medium text-white transition-all flex items-center justify-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              </svg>
+              Randomize Pattern
+            </button>
+          </div>
           }
-        }
-        
-        @if (activeTab() === 'shape') {
-          <div class="flex items-center justify-between">
-            <label class="text-sm font-semibold text-slate-700">Height</label>
-            <input type="range" min="50" max="250" class="w-40 accent-blue-600" [ngModel]="height()" (ngModelChange)="height.set($event)">
-          </div>
-          <div class="flex items-center justify-between">
-            <label class="text-sm font-semibold text-slate-700">Top Radius</label>
-            <input type="range" min="20" max="100" class="w-40 accent-blue-600" [ngModel]="topRadius()" (ngModelChange)="topRadius.set($event)">
-          </div>
-          <div class="flex items-center justify-between">
-            <label class="text-sm font-semibold text-slate-700">Bottom Radius</label>
-            <input type="range" min="10" max="100" class="w-40 accent-blue-600" [ngModel]="bottomRadius()" (ngModelChange)="bottomRadius.set($event)">
-          </div>
-          <div class="flex items-center justify-between">
-            <label class="text-sm font-semibold text-slate-700">Curvature</label>
-            <input type="range" min="0" max="1" step="0.01" class="w-40 accent-blue-600" [ngModel]="curvature()" (ngModelChange)="curvature.set($event)">
-          </div>
-          <div class="flex items-center justify-between">
-            <label class="text-sm font-semibold text-slate-700">Rim Profile</label>
-             <select class="w-40 rounded-md border-slate-300" [ngModel]="rimProfile()" (ngModelChange)="rimProfile.set($event)">
-                <option value="standard">Standard</option>
-                <option value="flared">Flared</option>
-                <option value="rounded">Rounded</option>
-             </select>
-          </div>
-        }
+          }
 
-        @if (activeTab() === 'finish') {
-          <div class="flex items-center justify-between">
-            <label class="text-sm font-semibold text-slate-700">Roughness</label>
-            <input type="range" min="0" max="1" step="0.01" class="w-40 accent-blue-600" [ngModel]="finishRoughness()" (ngModelChange)="finishRoughness.set($event)">
+          @if (activeTab() === 'shape') {
+          <div class="space-y-4">
+            <div class="flex flex-col gap-2">
+              <div class="flex justify-between">
+                <label class="text-xs font-semibold text-white/60 uppercase tracking-wider">Height</label>
+              </div>
+              <input type="range" min="50" max="250"
+                class="w-full h-1.5 bg-white/10 rounded-full appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-blue-500"
+                [ngModel]="height()" (ngModelChange)="height.set($event)">
+            </div>
+            <div class="flex flex-col gap-2">
+              <div class="flex justify-between">
+                <label class="text-xs font-semibold text-white/60 uppercase tracking-wider">Top Radius</label>
+              </div>
+              <input type="range" min="20" max="100"
+                class="w-full h-1.5 bg-white/10 rounded-full appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-blue-500"
+                [ngModel]="topRadius()" (ngModelChange)="topRadius.set($event)">
+            </div>
           </div>
-          <div class="flex items-center justify-between">
-            <label class="text-sm font-semibold text-slate-700">Metalness</label>
-            <input type="range" min="0" max="1" step="0.01" class="w-40 accent-blue-600" [ngModel]="finishMetalness()" (ngModelChange)="finishMetalness.set($event)">
+          <div class="space-y-4">
+            <div class="flex flex-col gap-2">
+              <div class="flex justify-between">
+                <label class="text-xs font-semibold text-white/60 uppercase tracking-wider">Bottom Radius</label>
+              </div>
+              <input type="range" min="10" max="100"
+                class="w-full h-1.5 bg-white/10 rounded-full appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-blue-500"
+                [ngModel]="bottomRadius()" (ngModelChange)="bottomRadius.set($event)">
+            </div>
+            <div class="flex flex-col gap-2">
+              <div class="flex justify-between">
+                <label class="text-xs font-semibold text-white/60 uppercase tracking-wider">Curvature</label>
+              </div>
+              <input type="range" min="0" max="1" step="0.01"
+                class="w-full h-1.5 bg-white/10 rounded-full appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-blue-500"
+                [ngModel]="curvature()" (ngModelChange)="curvature.set($event)">
+            </div>
           </div>
-          <div class="flex items-center justify-between">
-            <label class="text-sm font-semibold text-slate-700">Clearcoat</label>
-            <input type="range" min="0" max="1" step="0.01" class="w-40 accent-blue-600" [ngModel]="finishClearcoat()" (ngModelChange)="finishClearcoat.set($event)">
+          <div class="space-y-4">
+            <div class="flex flex-col gap-2">
+              <label class="text-xs font-semibold text-white/60 uppercase tracking-wider">Rim Profile</label>
+              <div class="flex bg-black/20 rounded-lg p-1">
+                <button (click)="rimProfile.set('standard')"
+                  class="flex-1 py-1.5 text-xs font-medium rounded-md transition-all"
+                  [class.bg-white/10]="rimProfile() === 'standard'" [class.text-white]="rimProfile() === 'standard'"
+                  [class.text-white/50]="rimProfile() !== 'standard'">Standard</button>
+                <button (click)="rimProfile.set('flared')"
+                  class="flex-1 py-1.5 text-xs font-medium rounded-md transition-all"
+                  [class.bg-white/10]="rimProfile() === 'flared'" [class.text-white]="rimProfile() === 'flared'"
+                  [class.text-white/50]="rimProfile() !== 'flared'">Flared</button>
+                <button (click)="rimProfile.set('rounded')"
+                  class="flex-1 py-1.5 text-xs font-medium rounded-md transition-all"
+                  [class.bg-white/10]="rimProfile() === 'rounded'" [class.text-white]="rimProfile() === 'rounded'"
+                  [class.text-white/50]="rimProfile() !== 'rounded'">Rounded</button>
+              </div>
+            </div>
           </div>
-        }
+          }
 
-        @if (activeTab() === 'mark') {
-          <div class="flex items-center justify-between">
-            <label class="text-sm font-semibold text-slate-700">Underfoot Code</label>
-            <input type="text" class="w-40 rounded-md border-slate-300 text-sm" [ngModel]="underfootCode()" (ngModelChange)="underfootCode.set($event)">
+          @if (activeTab() === 'finish') {
+          <div class="space-y-4">
+            <div class="flex flex-col gap-2">
+              <div class="flex justify-between">
+                <label class="text-xs font-semibold text-white/60 uppercase tracking-wider">Roughness</label>
+              </div>
+              <input type="range" min="0" max="1" step="0.01"
+                class="w-full h-1.5 bg-white/10 rounded-full appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-blue-500"
+                [ngModel]="finishRoughness()" (ngModelChange)="finishRoughness.set($event)">
+            </div>
+            <div class="flex flex-col gap-2">
+              <div class="flex justify-between">
+                <label class="text-xs font-semibold text-white/60 uppercase tracking-wider">Metalness</label>
+              </div>
+              <input type="range" min="0" max="1" step="0.01"
+                class="w-full h-1.5 bg-white/10 rounded-full appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-blue-500"
+                [ngModel]="finishMetalness()" (ngModelChange)="finishMetalness.set($event)">
+            </div>
           </div>
-          <div class="flex items-center justify-between">
-            <label class="text-sm font-semibold text-slate-700">Mark Size</label>
-            <input type="range" min="0.1" max="1" step="0.01" class="w-40 accent-blue-600" [ngModel]="markSize()" (ngModelChange)="markSize.set($event)">
+          <div class="space-y-4">
+            <div class="flex flex-col gap-2">
+              <div class="flex justify-between">
+                <label class="text-xs font-semibold text-white/60 uppercase tracking-wider">Clearcoat</label>
+              </div>
+              <input type="range" min="0" max="1" step="0.01"
+                class="w-full h-1.5 bg-white/10 rounded-full appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-blue-500"
+                [ngModel]="finishClearcoat()" (ngModelChange)="finishClearcoat.set($event)">
+            </div>
           </div>
-        }
+          }
+
+          @if (activeTab() === 'mark') {
+          <div class="space-y-4">
+            <div class="flex flex-col gap-2">
+              <label class="text-xs font-semibold text-white/60 uppercase tracking-wider">Underfoot Code</label>
+              <input type="text"
+                class="w-full bg-black/20 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500 transition-colors"
+                [ngModel]="underfootCode()" (ngModelChange)="underfootCode.set($event)">
+            </div>
+          </div>
+          <div class="space-y-4">
+            <div class="flex flex-col gap-2">
+              <div class="flex justify-between">
+                <label class="text-xs font-semibold text-white/60 uppercase tracking-wider">Mark Size</label>
+              </div>
+              <input type="range" min="0.1" max="1" step="0.01"
+                class="w-full h-1.5 bg-white/10 rounded-full appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-blue-500"
+                [ngModel]="markSize()" (ngModelChange)="markSize.set($event)">
+            </div>
+          </div>
+          }
+
+        </div>
       </div>
     </div>
-  </footer>
+  </div>
 </div>
